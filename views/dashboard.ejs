@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html>
+<head>
+
+    <title>DSA Lane Chat</title>
+
+    <style>
+
+        body{
+            font-family: Arial;
+            background:#1e1e1e;
+            color:white;
+        }
+
+        #chat{
+            height:300px;
+            border:1px solid gray;
+            padding:10px;
+            overflow-y:scroll;
+            margin-bottom:10px;
+        }
+
+        #msg{
+            width:80%;
+            padding:10px;
+        }
+
+        button{
+            padding:10px;
+        }
+
+    </style>
+
+</head>
+
+<body>
+
+<h2>DSA Lane - Chat</h2>
+
+<div id="chat"></div>
+
+<input id="msg" placeholder="Type message...">
+
+<button onclick="sendMessage()">Send</button>
+
+<script src="/socket.io/socket.io.js"></script>
+<script src="/javascripts/chat.js"></script>
+
+</body>
+</html>
