@@ -12,6 +12,7 @@ function sendMessage(){
 socket.on("receiveMessage",(msg)=>{
     const chat=document.getElementById("chat");
     const p=document.createElement("p");
-    p.innerText=msg;
+    p.innerText = msg.username + ": " + msg.message;
     chat.appendChild(p);
 })
+

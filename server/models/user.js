@@ -6,4 +6,4 @@ const schema=new mongoose.Schema({
     rating:Number
 });
 
-module.export=mongoose.model("user",schema);
+module.exports=mongoose.model("user",schema);
