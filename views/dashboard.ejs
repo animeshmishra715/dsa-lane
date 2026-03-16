@@ -40,11 +40,27 @@
 <div id="chat"></div>
 
 <input id="msg" placeholder="Type message...">
-
-<button onclick="sendMessage()">Send</button>
-
+<button id="sendbutton">Send
+</button>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/chat.js"></script>
+
+<script>
+
+    const button =document.getElementById("sendbutton");
+    const input = document.getElementById("msg")
+    button.addEventListener("click",function(input){
+        sendMessage(input);
+    });
+    input.addEventListener("keydown",function(event){
+        if(event.key==="Enter"){
+            sendMessage(input);
+        }
+    })
+
+
+</script>
+
 
 </body>
 </html>

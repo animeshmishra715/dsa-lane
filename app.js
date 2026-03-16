@@ -5,12 +5,14 @@ const path = require("path");
 const mongoose =require("mongoose");
 const Message = require("./server/models/message");
 const User = require("./server/models/user");
-
+const authRoutes=require("./server/routes/auth");
 const app = express();
-
+app.use(express.json());
+app.use("/auth",authRoutes);
 app.use(express.static("public"));
 app.set("views", path.join(__dirname,"views"));
 app.set("view engine","ejs");
+
 
 app.get("/dashboard",(req,res)=>{
     res.render("dashboard");
@@ -19,7 +21,7 @@ app.get("/dashboard",(req,res)=>{
 const server = http.createServer(app);
 const io = new Server(server);
 
-app.use(express.json());
+
 
 io.on("connection",(socket)=>{
     console.log("User Connected");
@@ -59,9 +61,9 @@ io.on("connection",(socket)=>{
 
 app.get("/message/:room", async (req,res)=>{
 
-    const message = await Message.find({
+    const messages = await Message.find({
         channelId:req.params.room
-    });
+    }).sort({createdAt:1});
 
     res.json(messages);
 });
