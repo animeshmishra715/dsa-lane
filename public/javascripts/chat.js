@@ -1,11 +1,13 @@
 const socket=io();
-const joinLevel="Advanced";
+const username=window.username;
+const joinLevel=user.level;
+const room=level.toLowerCase()+"-room";
 socket.emit("joinLevel",joinLevel);
-
 function sendMessage(){
     const message= document.getElementById("msg").value;
     socket.emit("sendMessage",{
-        room:"advanced-room",
+        room:room,
+        username:username,
         message:message
     });
 }
