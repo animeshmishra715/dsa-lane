@@ -9,4 +9,4 @@ const schema=new mongoose.Schema({
         default:Date.now
     }
 });
-module.export=mongoose.model("message",schema)
+module.exports=mongoose.model("message",schema)
