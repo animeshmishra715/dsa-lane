@@ -15,7 +15,13 @@ app.set("view engine","ejs");
 
 
 app.get("/dashboard",(req,res)=>{
-    res.render("dashboard");
+    res.render("dashboard", {
+        username: "Guest",
+        level: "Intermediate"
+    });
+});
+app.get("/login",(req,res)=>{
+    res.render("login");
 });
 
 const server = http.createServer(app);
