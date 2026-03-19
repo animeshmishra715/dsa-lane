@@ -36,12 +36,19 @@
 <body>
 
 <h2>DSA Lane - Chat</h2>
+<h3>Welcome, <span id="userName"></span></h3>
+<p>Level: <span id="userLevel"></span></p>
+<button onclick="logout()">Logout</button>
 
 <div id="chat"></div>
 
 <input id="msg" placeholder="Type message...">
 <button id="sendbutton">Send
 </button>
+<script>
+    window.username = localStorage.getItem("username") || "Guest";
+    window.level = localStorage.getItem("level") || "Intermediate";
+</script>
 <script src="/socket.io/socket.io.js"></script>
 <script src="/javascripts/chat.js"></script>
 
@@ -60,7 +67,16 @@
 
 
 </script>
-
+<script>
+    document.getElementById("userName").innerText = window.username;
+    document.getElementById("userLevel").innerText = window.level;
+</script>
+<script>
+function logout(){
+    localStorage.clear();
+    window.location.href = "/login";
+}
+</script>
 
 </body>
 </html>
