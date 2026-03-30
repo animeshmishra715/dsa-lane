@@ -54,7 +54,7 @@ document.addEventListener("DOMContentLoaded", () => {
         chat.scrollTop = chat.scrollHeight;
     }
 
-    // ✅ NOW BUTTON WILL WORK
+    // NOW BUTTON WILL WORK
     button.addEventListener("click", sendMessage);
 
     input.addEventListener("keydown", (e) => {

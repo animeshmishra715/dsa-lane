@@ -1,0 +1,119 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>DSA Lane</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=DM+Sans:ital,opsz,wght@0,9..40,100..1000;1,9..40,100..1000&family=Inter:ital,opsz,wght@0,14..32,100..900;1,14..32,100..900&display=swap" rel="stylesheet">
+</head>
+<style>
+    body{
+        height: 100vh;
+        width: 100vw;
+        display: flex;
+        background: pink;
+        margin: 0;
+    }
+    .section{
+        height: 100vh;
+    }
+    #chat{
+        width: 75%;
+        background: red;
+    }
+    #sideBar{
+        width: 25%;
+        background: blue;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: flex-start;
+    }
+    .sectionHeading{
+        height: 10%;
+        width: 100%;
+        font-family: Inter;
+        text-align: center;
+        color: darkorchid;
+        background: orange;
+        border-bottom: 1px black solid;
+    }
+    .advanceChat{
+        height: 40%;
+        width: 90%;
+        background: yellow;
+        margin-top: 5%;
+        border-radius: 15px;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        font-family: Inter;
+        padding-bottom: 4%;
+    }
+    .subSection{
+        height: 80%;
+        width: 90%;
+        background: white;
+        border-radius: 14px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    .chatList{
+        height: 100%;
+        width: 100%;
+        background: pink;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: space-evenly;
+        list-style: none;
+        border-radius: 10px;
+        padding: 0;
+    }
+    .chatPart{
+        height: 10%;
+        width: 90%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: purple;
+    }
+
+</style>
+<body>
+    <div class="section" id="sideBar">
+        <div class="sectionHeading">
+            <h1>DSA Lane</h1>
+        </div>
+        <div class="advanceChat">
+            <h2>Adv Chat</h2>
+            <div class="subSection">
+                <ul class="chatList">
+                    <li class="chatPart">RGB1</li>
+                    <li class="chatPart">RGB2</li>
+                    <li class="chatPart">RGB3</li>
+                </ul>
+            </div>
+        </div>
+    </div>
+    <div class="section" id="chat">
+    </div>
+</body>
+<script>
+    const div = document.querySelector('.advanceChat');
+    div.style.transition = 'height 0.3s ease';
+
+div.addEventListener('click', () => {
+    if (div.style.height === '40%') {
+        div.style.height = '10%';
+    } else {
+        div.style.height = '40%';
+    }
+});
+
+</script>
+</body>
+</html>

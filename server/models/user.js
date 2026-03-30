@@ -14,19 +14,26 @@ const schema=new mongoose.Schema({
         type:String,
         required:true
     },
+    codeforcesHandle:{
+        type:String,
+        default:""
+    },
+    leetcodeUsername:{
+        type:String,
+        default:""
+    },
+    rating:{
+        type:Number,
+        default:0
+    },
     level:{
         type:String,
         default: "Starter",
     },
     reputation:{
-        type:String,
+        type:Number,
         default:0
     },
-
-
-
-
-
 });
 
 module.exports=mongoose.model("user",schema);
