@@ -15,7 +15,7 @@ function Dashboard() {
 
   // 🔹 Fetch posts
   useEffect(() => {
-    fetch("http://localhost:3000/api/beginner/posts")
+ fetch("http://localhost:3000/api/intermediate/posts")
       .then(res => res.json())
       .then(data => setPosts(data))
       .catch(err => console.error(err));
@@ -23,36 +23,46 @@ function Dashboard() {
 
   // 🔹 Add post
   const addPost = async () => {
-    if (!title || !body) {
-      alert("Fill all fields");
-      return;
-    }
+  if (!title || !body) {
+    alert("Fill all fields");
+    return;
+  }
 
-    try {
-      await fetch("http://localhost:3000/api/beginner/posts", {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          title,
-          body,
-          channel,
-          author: username   // ✅ ADD THIS (important)
-        })
-      });
+  try {
+    // ✅ SEND POST REQUEST
+    await fetch("http://localhost:3000/api/intermediate/posts", {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json"
+      },
+      body: JSON.stringify({
+        title: title,
+        body: body,
+        channel: channel,
+        author: username
+      })
+    });
 
-      const res = await fetch("http://localhost:3000/api/beginner/posts");
-      const data = await res.json();
+    // ✅ UPDATE UI IMMEDIATELY
+    setPosts([
+      ...posts,
+      {
+        title,
+        body,
+        channel,
+        author: username
+      }
+    ]);
 
-      setPosts(data);
-      setTitle("");
-      setBody("");
+    // ✅ CLEAR INPUTS
+    setTitle("");
+    setBody("");
 
-    } catch (err) {
-      console.error(err);
-    }
-  };
+  } catch (err) {
+    console.error(err);
+    alert("Error posting");
+  }
+};
 
   // ✅ LOGOUT FUNCTION
   const handleLogout = () => {
@@ -89,7 +99,7 @@ function Dashboard() {
 
         {/* 🔹 Sidebar */}
         <aside className="sidebar">
-          <div className="sidebar-title">BEGINNER-ZONE</div>
+          <div className="sidebar-title">INTERMEDIATE-ZONE</div>
 
           <div className="channels">
 

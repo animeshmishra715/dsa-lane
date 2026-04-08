@@ -1,5 +1,13 @@
 require("dotenv").config();
 const express = require("express");
+const app = express();
+const cors = require("cors");
+
+app.use(cors({
+  origin: "http://localhost:3001",
+  credentials: true
+}));
+app.use(express.json());
 const http = require("http");
 const { Server } = require("socket.io");
 const path = require("path");
@@ -8,13 +16,10 @@ const Message = require("./server/models/message");
 const User = require("./server/models/user");
 const authRoutes = require("./server/routes/auth");
 const leaderboardRoutes = require("./server/routes/leaderboard");
-const app = express();
 const beginnerRoutes = require("./server/routes/beginner");
-const cors = require("cors");
-app.use(cors());
-app.use(express.json());
+const intermediateRoutes = require("./server/routes/intermediate");
+app.use("/api/intermediate", intermediateRoutes);
 app.use("/api/beginner", beginnerRoutes);
-app.use(express.json());
 app.use("/auth", authRoutes);
 app.use("/leaderboard", leaderboardRoutes);
 app.use(express.static("public"));
@@ -30,6 +35,9 @@ app.get("/dashboard", (req, res) => {
 });
 app.get("/login", (req, res) => {
     res.render("login");
+});
+app.get("/signup", (req, res) => {
+    res.render("signup");
 });
 
 const server = http.createServer(app);

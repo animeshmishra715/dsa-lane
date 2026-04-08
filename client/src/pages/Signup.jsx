@@ -3,14 +3,37 @@ import { useState } from "react";
 
 function Signup() {
   const navigate = useNavigate();
+
   const [data, setData] = useState({
     username: "",
+    email: "",
     password: "",
-    problems: ""
+    codeforcesHandle: "",
+    leetcodeUsername: ""
   });
 
-  const handleSignup = () => {
-    navigate("/");
+  const handleSignup = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/auth/signup", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify(data)
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        alert("Signup successful!");
+        navigate("/"); // go to login
+      } else {
+        alert(result.error || "Signup failed");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Server error");
+    }
   };
 
   return (
@@ -36,6 +59,16 @@ function Signup() {
         </div>
 
         <div className="form-group">
+          <label>Email</label>
+          <input
+            type="email"
+            onChange={(e) =>
+              setData({ ...data, email: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="form-group">
           <label>Password</label>
           <input
             type="password"
@@ -46,12 +79,23 @@ function Signup() {
         </div>
 
         <div className="form-group">
-          <label>Problems Solved</label>
+          <label>Codeforces Handle</label>
           <input
-            type="number"
-            placeholder="e.g. 12"
+            type="text"
+            placeholder="e.g. tourist"
             onChange={(e) =>
-              setData({ ...data, problems: e.target.value })
+              setData({ ...data, codeforcesHandle: e.target.value })
+            }
+          />
+        </div>
+
+        <div className="form-group">
+          <label>LeetCode Username</label>
+          <input
+            type="text"
+            placeholder="e.g. johndoe"
+            onChange={(e) =>
+              setData({ ...data, leetcodeUsername: e.target.value })
             }
           />
         </div>
