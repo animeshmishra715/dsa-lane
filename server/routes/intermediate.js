@@ -1,31 +1,32 @@
 const express = require("express");
 const router = express.Router();
-
-let posts = [];
+const Post = require("../models/Post");
 
 // GET posts
-router.get("/posts", (req, res) => {
+router.get("/posts", async (req, res) => {
+  const posts = await Post.find({ level: "Intermediate" });
   res.json(posts);
 });
 
 // POST new post
-router.post("/posts", (req, res) => {
+router.post("/posts", async (req, res) => {
   try {
     const { title, body, channel, author } = req.body;
 
-    const newPost = {
+    const newPost = new Post({
       title,
       body,
       channel,
-      author
-    };
+      author,
+      level: "Intermediate"
+    });
 
-    posts.push(newPost);
+    await newPost.save();
 
-    res.status(200).json({ message: "Post added successfully" });
-  } catch (error) {
-    console.log("ERROR IN POST:", error);
-    res.status(500).json({ error: "Failed to add post" });
+    res.json({ message: "Post saved" });
+  } catch (err) {
+    console.log(err);
+    res.status(500).json({ error: "Failed" });
   }
 });
 
