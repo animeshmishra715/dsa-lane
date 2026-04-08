@@ -3,11 +3,46 @@ import { useState } from "react";
 
 function Login() {
   const navigate = useNavigate();
-  const [username, setUsername] = useState("");
+
+  const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
 
-  const handleLogin = () => {
-    navigate("/dashboard");
+  const handleLogin = async () => {
+    try {
+      const res = await fetch("http://localhost:3000/auth/login", {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+          email: email,
+          password: password
+        })
+      });
+
+      const result = await res.json();
+
+      if (res.ok) {
+        // ✅ store user data
+        localStorage.setItem("token", result.token);
+        localStorage.setItem("username", result.username);
+        localStorage.setItem("level", result.level);
+
+        // go to dashboard
+        if (result.level === "Starter") {
+  navigate("/dashboard");
+} else if (result.level === "Intermediate") {
+  navigate("/intermediate");
+} else {
+  navigate("/dashboard"); // for now (we’ll add advanced later)
+}
+      } else {
+        alert(result.error || "Login failed");
+      }
+    } catch (err) {
+      console.log(err);
+      alert("Server error");
+    }
   };
 
   return (
@@ -23,11 +58,11 @@ function Login() {
         <p>Sign in to continue your DSA journey with us.</p>
 
         <div className="form-group">
-          <label>Username</label>
+          <label>Email</label>
           <input
-            type="text"
-            placeholder="e.g. username"
-            onChange={(e) => setUsername(e.target.value)}
+            type="email"
+            placeholder="e.g. your@email.com"
+            onChange={(e) => setEmail(e.target.value)}
           />
         </div>
 

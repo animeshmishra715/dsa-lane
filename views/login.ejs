@@ -9,6 +9,8 @@
 
 <button onclick="login()">Login</button>
 
+<p>Don't have an account? <a href="/signup">Sign Up</a></p>
+
 <script>
 function login(){
     fetch("/auth/login", {
@@ -24,12 +26,9 @@ function login(){
     .then(res => res.json())
     .then(data => {
         if(data.username){
-            // Store user data
             localStorage.setItem("username", data.username);
             localStorage.setItem("level", data.level);
 
-
-            //redirect
             window.location.href = "/dashboard";
         } else {
             alert("Login failed");
