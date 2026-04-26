@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<body>
+
+<h2>Signup</h2>
+
+<input id="username" placeholder="Username"><br><br>
+<input id="email" placeholder="Email"><br><br>
+<input id="password" type="password" placeholder="Password"><br><br>
+<input id="codeforces" placeholder="Codeforces Handle"><br><br>
+<input id="leetcode" placeholder="LeetCode Username"><br><br>
+
+<button onclick="signup()">Create Account</button>
+
+<p>Already have an account? <a href="/login">Login</a></p>
+
+<script>
+function signup(){
+    fetch("/auth/signup", {
+        method: "POST",
+        headers: {
+            "Content-Type": "application/json"
+        },
+        body: JSON.stringify({
+            username: document.getElementById("username").value,
+            email: document.getElementById("email").value,
+            password: document.getElementById("password").value,
+            codeforcesHandle: document.getElementById("codeforces").value,
+            leetcodeUsername: document.getElementById("leetcode").value
+        })
+    })
+    .then(res => res.json())
+    .then(data => {
+        if(data.message){
+            alert("Signup successful!");
+            window.location.href = "/login";
+        } else {
+            alert(data.error || "Signup failed");
+        }
+    });
+}
+</script>
+
+</body>
+</html>
