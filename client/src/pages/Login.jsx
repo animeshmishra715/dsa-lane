@@ -19,7 +19,7 @@ function Login() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3000/auth/login", {
+      const res = await fetch("https://dsa-lane.onrender.com/auth/login", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify({ email, password })
@@ -51,14 +51,12 @@ function Login() {
 
       <div className="auth-card">
 
-        {/* LOGO */}
         <div className="logo">
           <FaCode /> DSA-Lane
         </div>
 
         <h1>Welcome Back</h1>
 
-        {/* EMAIL */}
         <input
           type="email"
           placeholder="Enter your email"
@@ -67,7 +65,6 @@ function Login() {
           onKeyDown={(e) => e.key === "Enter" && handleLogin()}
         />
 
-        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Enter your password"
@@ -76,7 +73,6 @@ function Login() {
           onKeyDown={(e) => e.key === "Enter" && handleLogin()}
         />
 
-        {/* BUTTON */}
         <button
           className="primary-btn"
           onClick={handleLogin}
@@ -85,7 +81,6 @@ function Login() {
           {loading ? "Signing in..." : "Sign In"}
         </button>
 
-        {/* SWITCH */}
         <p className="auth-switch">
           Don’t have an account?
           <span onClick={() => navigate("/signup")}> Sign Up</span>

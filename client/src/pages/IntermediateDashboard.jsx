@@ -17,9 +17,9 @@ function IntermediateDashboard() {
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  // FETCH POSTS
+  // FETCH POSTS ✅ FIXED
   const fetchPosts = async () => {
-    const res = await fetch("http://localhost:3000/api/intermediate/posts");
+    const res = await fetch("https://dsa-lane.onrender.com/api/intermediate/posts");
     const data = await res.json();
     setPosts(data);
   };
@@ -28,11 +28,11 @@ function IntermediateDashboard() {
     fetchPosts();
   }, []);
 
-  // ADD POST
+  // ADD POST ✅ FIXED
   const addPost = async () => {
     if (!title || !body) return;
 
-    await fetch("http://localhost:3000/api/intermediate/posts", {
+    await fetch("https://dsa-lane.onrender.com/api/intermediate/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -50,9 +50,9 @@ function IntermediateDashboard() {
     setBody("");
   };
 
-  //  UPVOTE
+  // UPVOTE ✅ FIXED
   const upvote = async (id) => {
-    await fetch(`http://localhost:3000/api/intermediate/posts/${id}/upvote`, {
+    await fetch(`https://dsa-lane.onrender.com/api/intermediate/posts/${id}/upvote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -60,9 +60,9 @@ function IntermediateDashboard() {
     fetchPosts();
   };
 
-  // DOWNVOTE
+  // DOWNVOTE ✅ FIXED
   const downvote = async (id) => {
-    await fetch(`http://localhost:3000/api/intermediate/posts/${id}/downvote`, {
+    await fetch(`https://dsa-lane.onrender.com/api/intermediate/posts/${id}/downvote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -70,9 +70,9 @@ function IntermediateDashboard() {
     fetchPosts();
   };
 
-  // DELETE
+  // DELETE ✅ FIXED
   const deletePost = async (id) => {
-    await fetch(`http://localhost:3000/api/intermediate/posts/${id}`, {
+    await fetch(`https://dsa-lane.onrender.com/api/intermediate/posts/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -99,7 +99,6 @@ function IntermediateDashboard() {
 
   return (
     <>
-      {/* NAVBAR */}
       <div className="navbar">
         <div className="logo">
           <FaCode /> DSA-Lane
@@ -115,7 +114,6 @@ function IntermediateDashboard() {
 
       <div className="container">
 
-        {/* SIDEBAR */}
         <div className="sidebar">
           <h3>INTERMEDIATE</h3>
 
@@ -130,10 +128,8 @@ function IntermediateDashboard() {
           ))}
         </div>
 
-        {/* MAIN */}
         <div className="main">
 
-          {/* CREATE POST */}
           <div className="card">
             <h2>{channel} Discussion</h2>
 
@@ -154,7 +150,6 @@ function IntermediateDashboard() {
             </button>
           </div>
 
-          {/* POSTS */}
           {posts
             .filter(p => (p.channel ?? "arrays") === channel)
             .map((p) => (
@@ -164,7 +159,6 @@ function IntermediateDashboard() {
                 <p>{p.body}</p>
                 <span className="author">{p.author}</span>
 
-                {/* ACTIONS */}
                 <div className="post-actions">
 
                   <span onClick={() => upvote(p._id)}>

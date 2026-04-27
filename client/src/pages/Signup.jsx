@@ -27,7 +27,7 @@ function Signup() {
     try {
       setLoading(true);
 
-      const res = await fetch("http://localhost:3000/auth/signup", {
+      const res = await fetch("https://dsa-lane.onrender.com/auth/signup", {
         method: "POST",
         headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
@@ -55,14 +55,12 @@ function Signup() {
 
       <div className="auth-card">
 
-        {/* LOGO */}
         <div className="logo">
           <FaCode /> DSA-Lane
         </div>
 
         <h1>Create Account</h1>
 
-        {/* USERNAME */}
         <input
           placeholder="Username"
           value={data.username}
@@ -71,7 +69,6 @@ function Signup() {
           }
         />
 
-        {/* EMAIL */}
         <input
           type="email"
           placeholder="Email"
@@ -81,7 +78,6 @@ function Signup() {
           }
         />
 
-        {/* PASSWORD */}
         <input
           type="password"
           placeholder="Password"
@@ -92,7 +88,6 @@ function Signup() {
           onKeyDown={(e) => e.key === "Enter" && handleSignup()}
         />
 
-        {/* CODEFORCES */}
         <input
           placeholder="Codeforces Handle (optional)"
           value={data.codeforcesHandle}
@@ -101,7 +96,6 @@ function Signup() {
           }
         />
 
-        {/* LEETCODE */}
         <input
           placeholder="LeetCode Username (optional)"
           value={data.leetcodeUsername}
@@ -110,7 +104,6 @@ function Signup() {
           }
         />
 
-        {/* BUTTON */}
         <button
           className="primary-btn"
           onClick={handleSignup}
@@ -119,7 +112,6 @@ function Signup() {
           {loading ? "Creating..." : "Sign Up"}
         </button>
 
-        {/* SWITCH */}
         <p className="auth-switch">
           Already have an account?
           <span onClick={() => navigate("/")}> Sign In</span>
