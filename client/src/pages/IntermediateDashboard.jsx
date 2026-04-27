@@ -1,193 +1,195 @@
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import {
+  FaCode, FaLayerGroup, FaProjectDiagram,
+  FaTree, FaNetworkWired, FaCubes, FaDatabase,
+  FaBrain, FaBolt, FaFlagCheckered,
+  FaThumbsUp, FaThumbsDown, FaTrash
+} from "react-icons/fa";
+import "../App.css";
 
-function Dashboard() {
+function IntermediateDashboard() {
   const navigate = useNavigate();
-
-  // ✅ GET USER DATA
   const username = localStorage.getItem("username");
-  const level = localStorage.getItem("level");
 
   const [channel, setChannel] = useState("arrays");
   const [posts, setPosts] = useState([]);
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
 
-  // 🔹 Fetch posts
+  // FETCH POSTS
+  const fetchPosts = async () => {
+    const res = await fetch("http://localhost:3000/api/intermediate/posts");
+    const data = await res.json();
+    setPosts(data);
+  };
+
   useEffect(() => {
- fetch("http://localhost:3000/api/intermediate/posts")
-      .then(res => res.json())
-      .then(data => setPosts(data))
-      .catch(err => console.error(err));
+    fetchPosts();
   }, []);
 
-  // 🔹 Add post
+  // ADD POST
   const addPost = async () => {
-  if (!title || !body) {
-    alert("Fill all fields");
-    return;
-  }
+    if (!title || !body) return;
 
-  try {
-    // ✅ SEND POST REQUEST
     await fetch("http://localhost:3000/api/intermediate/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
       },
       body: JSON.stringify({
-        title: title,
-        body: body,
-        channel: channel,
-        author: username
-      })
-    });
-
-    // ✅ UPDATE UI IMMEDIATELY
-    setPosts([
-      ...posts,
-      {
         title,
         body,
         channel,
         author: username
-      }
-    ]);
+      })
+    });
 
-    // ✅ CLEAR INPUTS
+    fetchPosts();
     setTitle("");
     setBody("");
+  };
 
-  } catch (err) {
-    console.error(err);
-    alert("Error posting");
-  }
-};
+  //  UPVOTE
+  const upvote = async (id) => {
+    await fetch(`http://localhost:3000/api/intermediate/posts/${id}/upvote`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username })
+    });
+    fetchPosts();
+  };
 
-  // ✅ LOGOUT FUNCTION
+  // DOWNVOTE
+  const downvote = async (id) => {
+    await fetch(`http://localhost:3000/api/intermediate/posts/${id}/downvote`, {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username })
+    });
+    fetchPosts();
+  };
+
+  // DELETE
+  const deletePost = async (id) => {
+    await fetch(`http://localhost:3000/api/intermediate/posts/${id}`, {
+      method: "DELETE",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({ username })
+    });
+    fetchPosts();
+  };
+
   const handleLogout = () => {
     localStorage.clear();
     navigate("/");
   };
 
-  return (
-    <div id="page-dashboard">
+  const topics = [
+    ["arrays", <FaCubes />, "Arrays"],
+    ["linkedlist", <FaProjectDiagram />, "Linked List"],
+    ["stack", <FaLayerGroup />, "Stack"],
+    ["queue", <FaDatabase />, "Queue"],
+    ["tree", <FaTree />, "Trees"],
+    ["graph", <FaNetworkWired />, "Graphs"],
+    ["dp", <FaBrain />, "DP"],
+    ["greedy", <FaBolt />, "Greedy"],
+    ["cp", <FaFlagCheckered />, "CP"]
+  ];
 
-      {/* 🔹 Navbar */}
-      <nav className="navbar">
-        <div className="navbar-brand">
-          <div className="navbar-icon">
-            <i className="fa-solid fa-code"></i>
-          </div>
-          <span>DSA-Lane</span>
+  return (
+    <>
+      {/* NAVBAR */}
+      <div className="navbar">
+        <div className="logo">
+          <FaCode /> DSA-Lane
         </div>
 
-        <div className="navbar-right">
-          {/* ✅ SHOW USERNAME + LEVEL */}
-          <span id="nav-username">
-            {username} ({level})
-          </span>
-
-          {/* ✅ WORKING LOGOUT */}
-          <button id="logout-btn" onClick={handleLogout}>
+        <div>
+          {username} (Intermediate)
+          <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
         </div>
-      </nav>
+      </div>
 
-      <div className="dash-body">
+      <div className="container">
 
-        {/* 🔹 Sidebar */}
-        <aside className="sidebar">
-          <div className="sidebar-title">INTERMEDIATE-ZONE</div>
+        {/* SIDEBAR */}
+        <div className="sidebar">
+          <h3>INTERMEDIATE</h3>
 
-          <div className="channels">
-
+          {topics.map(([key, icon, label]) => (
             <div
-              className={`channel-item ${channel === "arrays" ? "active" : ""}`}
-              onClick={() => setChannel("arrays")}
+              key={key}
+              className={`sidebar-item ${channel === key ? "active" : ""}`}
+              onClick={() => setChannel(key)}
             >
-              <i className="fa-solid fa-table-cells"></i>
-              <span>ARRAYS</span>
+              {icon} {label}
             </div>
+          ))}
+        </div>
 
-            <div
-              className={`channel-item ${channel === "linkedlist" ? "active" : ""}`}
-              onClick={() => setChannel("linkedlist")}
-            >
-              <i className="fa-solid fa-link"></i>
-              <span>Linked List</span>
-            </div>
+        {/* MAIN */}
+        <div className="main">
 
-            <div
-              className={`channel-item ${channel === "stack" ? "active" : ""}`}
-              onClick={() => setChannel("stack")}
-            >
-              <i className="fa-solid fa-layer-group"></i>
-              <span>Stack</span>
-            </div>
-
-            <div
-              className={`channel-item ${channel === "dp" ? "active" : ""}`}
-              onClick={() => setChannel("dp")}
-            >
-              <i className="fa-solid fa-brain"></i>
-              <span>Dynamic Programming</span>
-            </div>
-
-          </div>
-        </aside>
-
-        {/* 🔹 Main */}
-        <main className="main">
-
-          <div className="channel-header">
+          {/* CREATE POST */}
+          <div className="card">
             <h2>{channel} Discussion</h2>
-          </div>
-
-          {/* 🔹 Create Post */}
-          <div className="create-post">
 
             <input
-              id="post-title"
+              placeholder="Post title..."
               value={title}
               onChange={(e) => setTitle(e.target.value)}
-              placeholder="Post title..."
             />
 
             <textarea
-              id="post-body"
+              placeholder="Write your question..."
               value={body}
               onChange={(e) => setBody(e.target.value)}
-              placeholder="Share your question or solution..."
             />
 
-            <button id="post-btn" onClick={addPost}>
+            <button className="primary-btn" onClick={addPost}>
               Post
             </button>
-
           </div>
 
-          {/* 🔹 Posts */}
-          <div id="posts-container">
-            {posts
-              .filter(p => (p.channel ?? "arrays").trim().toLowerCase() === channel)
-              .map((p, i) => (
-                <div key={i} className="post-card">
-                  <div className="post-card-title">{p.title}</div>
-                  <div className="post-card-body">{p.body}</div>
-                  <div className="post-card-footer">
-                    <span className="post-author">{p.author}</span>
-                  </div>
+          {/* POSTS */}
+          {posts
+            .filter(p => (p.channel ?? "arrays") === channel)
+            .map((p) => (
+              <div key={p._id} className="post-card">
+
+                <h4>{p.title}</h4>
+                <p>{p.body}</p>
+                <span className="author">{p.author}</span>
+
+                {/* ACTIONS */}
+                <div className="post-actions">
+
+                  <span onClick={() => upvote(p._id)}>
+                    <FaThumbsUp /> {p.upvotes}
+                  </span>
+
+                  <span onClick={() => downvote(p._id)}>
+                    <FaThumbsDown /> {p.downvotes}
+                  </span>
+
+                  {p.author === username && (
+                    <span onClick={() => deletePost(p._id)}>
+                      <FaTrash />
+                    </span>
+                  )}
+
                 </div>
-              ))}
-          </div>
 
-        </main>
+              </div>
+            ))}
 
+        </div>
       </div>
-    </div>
+    </>
   );
 }
 
-export default Dashboard;
+export default IntermediateDashboard;

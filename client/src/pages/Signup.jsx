@@ -1,5 +1,7 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaCode } from "react-icons/fa";
+import "../App.css";
 
 function Signup() {
   const navigate = useNavigate();
@@ -12,101 +14,115 @@ function Signup() {
     leetcodeUsername: ""
   });
 
+  const [loading, setLoading] = useState(false);
+
   const handleSignup = async () => {
+    const { username, email, password } = data;
+
+    if (!username || !email || !password) {
+      alert("Please fill all required fields");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       const res = await fetch("http://localhost:3000/auth/signup", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
+        headers: { "Content-Type": "application/json" },
         body: JSON.stringify(data)
       });
 
       const result = await res.json();
 
       if (res.ok) {
-        alert("Signup successful!");
-        navigate("/"); // go to login
+        alert("Signup successful");
+        navigate("/");
       } else {
         alert(result.error || "Signup failed");
       }
+
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("Server error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="page active">
+    <div className="auth-container">
+
       <div className="auth-card">
 
+        {/* LOGO */}
         <div className="logo">
-          <div className="logo-icon">💻</div>
-          <span>DSA-Lane</span>
+          <FaCode /> DSA-Lane
         </div>
 
         <h1>Create Account</h1>
-        <p>Join the community and hustle harder.</p>
 
-        <div className="form-group">
-          <label>Username</label>
-          <input
-            type="text"
-            onChange={(e) =>
-              setData({ ...data, username: e.target.value })
-            }
-          />
-        </div>
+        {/* USERNAME */}
+        <input
+          placeholder="Username"
+          value={data.username}
+          onChange={(e) =>
+            setData({ ...data, username: e.target.value })
+          }
+        />
 
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            onChange={(e) =>
-              setData({ ...data, email: e.target.value })
-            }
-          />
-        </div>
+        {/* EMAIL */}
+        <input
+          type="email"
+          placeholder="Email"
+          value={data.email}
+          onChange={(e) =>
+            setData({ ...data, email: e.target.value })
+          }
+        />
 
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            onChange={(e) =>
-              setData({ ...data, password: e.target.value })
-            }
-          />
-        </div>
+        {/* PASSWORD */}
+        <input
+          type="password"
+          placeholder="Password"
+          value={data.password}
+          onChange={(e) =>
+            setData({ ...data, password: e.target.value })
+          }
+          onKeyDown={(e) => e.key === "Enter" && handleSignup()}
+        />
 
-        <div className="form-group">
-          <label>Codeforces Handle</label>
-          <input
-            type="text"
-            placeholder="e.g. tourist"
-            onChange={(e) =>
-              setData({ ...data, codeforcesHandle: e.target.value })
-            }
-          />
-        </div>
+        {/* CODEFORCES */}
+        <input
+          placeholder="Codeforces Handle (optional)"
+          value={data.codeforcesHandle}
+          onChange={(e) =>
+            setData({ ...data, codeforcesHandle: e.target.value })
+          }
+        />
 
-        <div className="form-group">
-          <label>LeetCode Username</label>
-          <input
-            type="text"
-            placeholder="e.g. johndoe"
-            onChange={(e) =>
-              setData({ ...data, leetcodeUsername: e.target.value })
-            }
-          />
-        </div>
+        {/* LEETCODE */}
+        <input
+          placeholder="LeetCode Username (optional)"
+          value={data.leetcodeUsername}
+          onChange={(e) =>
+            setData({ ...data, leetcodeUsername: e.target.value })
+          }
+        />
 
-        <button id="signup-btn" onClick={handleSignup}>
-          Create Account
+        {/* BUTTON */}
+        <button
+          className="primary-btn"
+          onClick={handleSignup}
+          disabled={loading}
+        >
+          {loading ? "Creating..." : "Sign Up"}
         </button>
 
-        <p className="auth-footer">
-          Already have an account?{" "}
-          <span onClick={() => navigate("/")}>Sign In</span>
+        {/* SWITCH */}
+        <p className="auth-switch">
+          Already have an account?
+          <span onClick={() => navigate("/")}> Sign In</span>
         </p>
 
       </div>

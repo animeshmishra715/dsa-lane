@@ -8,7 +8,7 @@ import {
 } from "react-icons/fa";
 import "../App.css";
 
-function Dashboard() {
+function AdvancedDashboard() {
   const navigate = useNavigate();
   const username = localStorage.getItem("username");
 
@@ -19,7 +19,7 @@ function Dashboard() {
 
   // FETCH POSTS
   const fetchPosts = async () => {
-    const res = await fetch("http://localhost:3000/api/beginner/posts");
+    const res = await fetch("http://localhost:3000/api/advanced/posts");
     const data = await res.json();
     setPosts(data);
   };
@@ -28,11 +28,11 @@ function Dashboard() {
     fetchPosts();
   }, []);
 
-  //ADD POST
+  //  ADD POST
   const addPost = async () => {
     if (!title || !body) return;
 
-    await fetch("http://localhost:3000/api/beginner/posts", {
+    await fetch("http://localhost:3000/api/advanced/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json"
@@ -52,7 +52,7 @@ function Dashboard() {
 
   // UPVOTE
   const upvote = async (id) => {
-    await fetch(`http://localhost:3000/api/beginner/posts/${id}/upvote`, {
+    await fetch(`http://localhost:3000/api/advanced/posts/${id}/upvote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -62,7 +62,7 @@ function Dashboard() {
 
   // DOWNVOTE
   const downvote = async (id) => {
-    await fetch(`http://localhost:3000/api/beginner/posts/${id}/downvote`, {
+    await fetch(`http://localhost:3000/api/advanced/posts/${id}/downvote`, {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -70,9 +70,9 @@ function Dashboard() {
     fetchPosts();
   };
 
-  //  DELETE
+  //DELETE
   const deletePost = async (id) => {
-    await fetch(`http://localhost:3000/api/beginner/posts/${id}`, {
+    await fetch(`http://localhost:3000/api/advanced/posts/${id}`, {
       method: "DELETE",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify({ username })
@@ -106,7 +106,7 @@ function Dashboard() {
         </div>
 
         <div>
-          {username} (Beginner)
+          {username} (Advanced)
           <button className="logout-btn" onClick={handleLogout}>
             Logout
           </button>
@@ -117,7 +117,7 @@ function Dashboard() {
 
         {/* SIDEBAR */}
         <div className="sidebar">
-          <h3>BEGINNER</h3>
+          <h3>ADVANCED</h3>
 
           {topics.map(([key, icon, label]) => (
             <div
@@ -192,4 +192,4 @@ function Dashboard() {
   );
 }
 
-export default Dashboard;
+export default AdvancedDashboard;

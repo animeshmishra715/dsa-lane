@@ -1,87 +1,94 @@
 import { useNavigate } from "react-router-dom";
 import { useState } from "react";
+import { FaCode } from "react-icons/fa";
+import "../App.css";
 
 function Login() {
   const navigate = useNavigate();
 
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const handleLogin = async () => {
+    if (!email || !password) {
+      alert("Please fill all fields");
+      return;
+    }
+
     try {
+      setLoading(true);
+
       const res = await fetch("http://localhost:3000/auth/login", {
         method: "POST",
-        headers: {
-          "Content-Type": "application/json"
-        },
-        body: JSON.stringify({
-          email: email,
-          password: password
-        })
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({ email, password })
       });
 
       const result = await res.json();
 
       if (res.ok) {
-        // ✅ store user data
-        localStorage.setItem("token", result.token);
         localStorage.setItem("username", result.username);
         localStorage.setItem("level", result.level);
 
-        // go to dashboard
-        if (result.level === "Starter") {
-  navigate("/dashboard");
-} else if (result.level === "Intermediate") {
-  navigate("/intermediate");
-} else {
-  navigate("/dashboard"); // for now (we’ll add advanced later)
-}
+        if (result.level === "Starter") navigate("/dashboard");
+        else if (result.level === "Intermediate") navigate("/intermediate");
+        else navigate("/advanced");
       } else {
         alert(result.error || "Login failed");
       }
+
     } catch (err) {
-      console.log(err);
+      console.error(err);
       alert("Server error");
+    } finally {
+      setLoading(false);
     }
   };
 
   return (
-    <div className="page active">
+    <div className="auth-container">
+
       <div className="auth-card">
 
+        {/* LOGO */}
         <div className="logo">
-          <div className="logo-icon">💻</div>
-          <span>DSA-Lane</span>
+          <FaCode /> DSA-Lane
         </div>
 
-        <h1>Welcome</h1>
-        <p>Sign in to continue your DSA journey with us.</p>
+        <h1>Welcome Back</h1>
 
-        <div className="form-group">
-          <label>Email</label>
-          <input
-            type="email"
-            placeholder="e.g. your@email.com"
-            onChange={(e) => setEmail(e.target.value)}
-          />
-        </div>
+        {/* EMAIL */}
+        <input
+          type="email"
+          placeholder="Enter your email"
+          value={email}
+          onChange={(e) => setEmail(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+        />
 
-        <div className="form-group">
-          <label>Password</label>
-          <input
-            type="password"
-            placeholder="•••••••"
-            onChange={(e) => setPassword(e.target.value)}
-          />
-        </div>
+        {/* PASSWORD */}
+        <input
+          type="password"
+          placeholder="Enter your password"
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
+          onKeyDown={(e) => e.key === "Enter" && handleLogin()}
+        />
 
-        <button id="login-btn" onClick={handleLogin}>
-          Sign In
+        {/* BUTTON */}
+        <button
+          className="primary-btn"
+          onClick={handleLogin}
+          disabled={loading}
+        >
+          {loading ? "Signing in..." : "Sign In"}
         </button>
 
-        <p className="auth-footer">
-          Don't have an account?{" "}
-          <span onClick={() => navigate("/signup")}>Sign Up</span>
+        {/* SWITCH */}
+        <p className="auth-switch">
+          Don’t have an account?
+          <span onClick={() => navigate("/signup")}> Sign Up</span>
         </p>
 
       </div>

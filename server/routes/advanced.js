@@ -2,10 +2,10 @@ const express = require("express");
 const router = express.Router();
 const Post = require("../models/Post");
 
-// GET all Intermediate posts (newest first)
+// GET all Advanced posts (newest first)
 router.get("/posts", async (req, res) => {
   try {
-    const posts = await Post.find({ level: "Intermediate" })
+    const posts = await Post.find({ level: "Advanced" })
       .sort({ createdAt: -1 });
 
     res.json(posts);
@@ -15,7 +15,7 @@ router.get("/posts", async (req, res) => {
   }
 });
 
-// CREATE Intermediate post
+//CREATE Advanced post
 router.post("/posts", async (req, res) => {
   try {
     console.log("BODY RECEIVED:", req.body);
@@ -27,7 +27,7 @@ router.post("/posts", async (req, res) => {
       body,
       author: author || "User",
       channel: channel?.trim() || "arrays",
-      level: "Intermediate"
+      level: "Advanced"
     });
 
     await newPost.save();
@@ -43,9 +43,7 @@ router.post("/posts", async (req, res) => {
 });
 
 
-
 // UPVOTE (ANTI-SPAM)
-
 router.post("/posts/:id/upvote", async (req, res) => {
   try {
     const { username } = req.body;
@@ -56,18 +54,18 @@ router.post("/posts/:id/upvote", async (req, res) => {
       return res.status(404).json({ error: "Post not found" });
     }
 
-    //  already upvoted
+    // already upvoted
     if (post.upvotedBy.includes(username)) {
       return res.json({ message: "Already upvoted" });
     }
 
-    // remove downvote if exists
+    //remove downvote if exists
     if (post.downvotedBy.includes(username)) {
       post.downvotedBy = post.downvotedBy.filter(u => u !== username);
       post.downvotes -= 1;
     }
 
-    // add upvote
+    //add upvote
     post.upvotedBy.push(username);
     post.upvotes += 1;
 
@@ -99,13 +97,13 @@ router.post("/posts/:id/downvote", async (req, res) => {
       return res.json({ message: "Already downvoted" });
     }
 
-    // remove upvote if exists
+    //remove upvote if exists
     if (post.upvotedBy.includes(username)) {
       post.upvotedBy = post.upvotedBy.filter(u => u !== username);
       post.upvotes -= 1;
     }
 
-    // add downvote
+    //add downvote
     post.downvotedBy.push(username);
     post.downvotes += 1;
 
@@ -118,6 +116,7 @@ router.post("/posts/:id/downvote", async (req, res) => {
     res.status(500).json({ error: err.message });
   }
 });
+
 
 // DELETE (ONLY AUTHOR)
 router.delete("/posts/:id", async (req, res) => {
